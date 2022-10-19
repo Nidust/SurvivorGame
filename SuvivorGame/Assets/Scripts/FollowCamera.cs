@@ -1,11 +1,9 @@
+using Assets.Scripts.Extensions;
 using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    [SerializeField]
-    private BoxCollider2D limit;
     private Transform player;
-
     private Vector2 cameraHalfSize;
 
     private void Start()
@@ -27,23 +25,6 @@ public class FollowCamera : MonoBehaviour
             z: transform.position.z
         );
 
-        transform.position = ClampPosition(newPosition);
-    }
-
-    private Vector3 ClampPosition(Vector3 position)
-    {
-        position.x = Mathf.Clamp(
-            value: position.x,
-            min: limit.bounds.min.x + cameraHalfSize.x,
-            max: limit.bounds.max.x - cameraHalfSize.x
-        );
-
-        position.y = Mathf.Clamp(
-            value: position.y,
-            min: limit.bounds.min.y + cameraHalfSize.y,
-            max: limit.bounds.max.y - cameraHalfSize.y
-        );
-
-        return position;
+        transform.position = newPosition.Limit(RestrictionType.Camera, cameraHalfSize);
     }
 }
