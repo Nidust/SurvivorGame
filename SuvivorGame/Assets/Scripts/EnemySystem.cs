@@ -13,6 +13,8 @@ public class EnemySpawner
 public class EnemySystem : MonoBehaviour
 {
     [SerializeField]
+    private int initSpawnCount;
+    [SerializeField]
     private EnemySpawner[] spawnList;
 
     private Bounds spawnBounds;
@@ -20,16 +22,19 @@ public class EnemySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnBounds = MovementRestrictions.GetLimit(RestrictionType.Object);
+        spawnBounds = MovementBoundary.GetLimit(RestrictionType.Object);
 
         foreach (EnemySpawner spawner in spawnList)
         {
             StartCoroutine("SpawnCoroutine", spawner);
         }
 
-        for (int index = 0; index < 30; index++)
+        if (spawnList.Length > 0)
         {
-            Spawn(spawnList[0]);
+            for (int index = 0; index < initSpawnCount; index++)
+            {
+                Spawn(spawnList[0]);
+            }
         }
     }
 

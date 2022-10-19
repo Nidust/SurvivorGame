@@ -7,9 +7,9 @@ public enum RestrictionType
     Camera,
 }
 
-public class MovementRestrictions : MonoBehaviour
+public class MovementBoundary : MonoBehaviour
 {
-    private static MovementRestrictions Instance;
+    private static MovementBoundary Instance;
 
     [SerializeField]
     private Boundary objectLimit;
@@ -32,5 +32,15 @@ public class MovementRestrictions : MonoBehaviour
             default:
                 throw new Exception("???? ?? RestrictionType ???");
         }
+    }
+
+    public static bool IsInside(Vector3 position, RestrictionType type)
+    {
+        Bounds bounds = GetLimit(type);
+
+        return bounds.min.x < position.x 
+            && bounds.max.x > position.x
+            && bounds.min.y < position.y
+            && bounds.max.y > position.y;
     }
 }

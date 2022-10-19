@@ -10,7 +10,7 @@ namespace Assets.Scripts.Extensions
             RestrictionType restrictionType = RestrictionType.Object,
             Vector2? padding = null)
         {
-            Bounds limit = MovementRestrictions.GetLimit(restrictionType);
+            Bounds limit = MovementBoundary.GetLimit(restrictionType);
 
             if (padding == null)
             {

@@ -26,6 +26,11 @@ public class ManagedObject : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         bool prevEnter = onEnter;
 
         lastDistance = Vector2.Distance(transform.position, player.transform.position);

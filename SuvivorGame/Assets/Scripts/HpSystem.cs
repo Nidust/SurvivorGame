@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HpSystem : MonoBehaviour
 {
@@ -7,11 +8,14 @@ public class HpSystem : MonoBehaviour
     private float hp = 0.0f;
     [SerializeField]
     private string[] excludeTag;
+    [SerializeField]
+    private UnityEvent onDie;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private bool die = false;
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject obj = collision.gameObject;
-
         if (obj.CompareTag("Untagged") || obj.CompareTag(gameObject.tag))
         {
             return;
@@ -22,6 +26,16 @@ public class HpSystem : MonoBehaviour
             return;
         }
 
-        Destroy(gameObject);
+        hp -= 1f;
+        if (hp <= 0.0f && die == false)
+        {
+            if (onDie != null)
+            {
+                onDie.Invoke();
+            }
+
+            die = true;
+            Destroy(gameObject);
+        }
     }
 }

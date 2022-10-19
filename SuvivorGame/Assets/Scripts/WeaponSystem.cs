@@ -35,6 +35,11 @@ public class WeaponSystem : MonoBehaviour
         {
             yield return new WaitForSeconds(spawner.CoolTime);
 
+            if (player == null)
+            {
+                break;
+            }
+
             GameObject enemy = ObjectManager.GetNearestEnemy();
             if (enemy != null)
             {
@@ -43,8 +48,31 @@ public class WeaponSystem : MonoBehaviour
 
                 Instantiate(spawner.Prefab, spawnPos + offset, Quaternion.identity, transform)
                     .GetComponent<Movement>()
-                    .SetTarget(enemy);
+                    .SetTarget(enemy)
+                    .SetDestroyWhenOut(true);
             }
+        }
+
+        yield return null;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        
+        Vector3 spawnPos = player.transform.position;
+
+        foreach (var weapon in weaponList)
+        {
+            Vector3 offset = playerRenderer.bounds.size * weapon.pivot;
+
+            // Draw a semitransparent red cube at the transforms position
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawSphere(spawnPos + new Vector3(offset.x, offset.y, 0f), 0.1f);
         }
     }
 }

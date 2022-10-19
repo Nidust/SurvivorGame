@@ -19,6 +19,11 @@ public class FollowCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         Vector3 newPosition = new Vector3(
             x: player.position.x,
             y: player.position.y,
